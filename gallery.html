@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Memory Gallery</title>
+
+<style>
+
+body{
+    background:#fff5fa;
+    text-align:center;
+    font-family:Arial,sans-serif;
+    padding:20px;
+}
+
+h1{
+    color:#ff1493;
+    margin-bottom:25px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.gallery img{
+    width:100%;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+.backBtn{
+    margin-top:25px;
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:#ff1493;
+    color:white;
+    font-size:18px;
+}
+.heart{
+    position:fixed;
+    font-size:30px;
+    animation:float 8s linear infinite;
+}
+
+.h1{ left:10%; }
+.h2{ left:50%; animation-delay:2s; }
+.h3{ left:80%; animation-delay:4s; }
+
+@keyframes float{
+    from{
+        top:100%;
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+        top:-100px;
+        opacity:0;
+    }
+}
+#popup{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.9);
+    justify-content:center;
+    align-items:center;
+}
+
+#popup img{
+    max-width:90%;
+    max-height:90%;
+}
+.secretBtn{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:30px;
+    background:#ff1493;
+    color:white;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+#secret{
+    margin-top:25px;
+    background:white;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+</style>
+</head>
+
+<body>
+<div class="heart h1">💖</div>
+<div class="heart h2">💕</div>
+<div class="heart h3">💗</div>
+<h1>🎂 Birthday Star Gallery 🎂</h1>
+<div id="popup" onclick="closePhoto()">
+<img id="popupImg">
+</div>
+<div class="gallery">
+
+<img src="photo6.jpg">
+<img src="photo7.jpg">
+<img src="photo3.jpg">
+<img src="photo4.jpg">
+
+</div>
+<button onclick="showSecret()" class="secretBtn">
+    🎁 Open Secret Memory
+</button>
+
+<div id="secret" style="display:none;">
+
+    <img src="photo5.jpg" width="250">
+
+    <h2>💖 Special Memory 💖</h2>
+
+    <p>Your special message goes here.</p>
+
+</div>
+<button class="backBtn"
+onclick="window.location.href='index.html'">
+⬅ Back
+</button>
+
+<script>
+
+const photos = document.querySelectorAll(".gallery img");
+
+photos.forEach(photo=>{
+
+    photo.onclick = ()=>{
+
+        document.getElementById("popup").style.display="flex";
+
+        document.getElementById("popupImg").src = photo.src;
+    };
+
+});
+
+function closePhoto(){
+
+    document.getElementById("popup").style.display="none";
+
+}
+
+function showSecret(){
+
+    document.getElementById("secret").style.display = "block";
+
+}
+
+</script>
+</body>
+</html>

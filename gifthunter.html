@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gift Hunter</title>
+
+<style>
+
+body{
+    background:#fff5fa;
+    text-align:center;
+    font-family:Arial,sans-serif;
+    padding:20px;
+    overflow-x:hidden;
+}
+
+h1{
+    color:#ff1493;
+}
+
+/* Floating Hearts */
+
+.heart{
+    position:fixed;
+    font-size:30px;
+    animation:float 8s linear infinite;
+    pointer-events:none;
+}
+
+.h1{left:10%;}
+.h2{left:50%;animation-delay:2s;}
+.h3{left:80%;animation-delay:4s;}
+
+@keyframes float{
+    from{
+        top:100%;
+        opacity:0;
+    }
+
+    20%{
+        opacity:1;
+    }
+
+    to{
+        top:-100px;
+        opacity:0;
+    }
+}
+
+/* Gift Box */
+
+#giftBox{
+    font-size:120px;
+    cursor:pointer;
+    margin-top:40px;
+    animation:bounce 1.5s infinite;
+}
+
+@keyframes bounce{
+    50%{
+        transform:translateY(-15px);
+    }
+}
+
+/* Scratch Card */
+
+#scratchCard{
+    display:none;
+}
+
+
+
+/* Reward Section */
+
+#reward{
+    display:none;
+}
+
+.rewardPhoto{
+    width:250px;
+    max-width:90%;
+    border-radius:20px;
+    margin-top:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+.letter{
+    max-width:500px;
+    margin:25px auto;
+    background:white;
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+    line-height:1.8;
+}
+
+/* Buttons */
+
+.backBtn{
+    margin-top:25px;
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:#ff1493;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.secretTitle{
+    color:#ff1493;
+}
+#scratchArea{
+    width:300px;
+    height:150px;
+    margin:25px auto;
+    border-radius:20px;
+
+    background:
+    repeating-linear-gradient(
+        45deg,
+        #c0c0c0,
+        #c0c0c0 10px,
+        #d8d8d8 10px,
+        #d8d8d8 20px
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:24px;
+    font-weight:bold;
+    color:#444;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.25),
+    inset 0 2px 5px rgba(255,255,255,.6);
+}
+
+
+
+#scratchCard{
+    width:300px;
+    height:180px;
+    margin:30px auto;
+    position:relative;
+    border-radius:20px;
+    overflow:hidden;
+    display:none;
+}
+
+#hiddenPrize{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:white;
+    color:#ff1493;
+    font-size:28px;
+    font-weight:bold;
+}
+
+#cover{
+    position:absolute;
+    inset:0;
+    background:
+    repeating-linear-gradient(
+        45deg,
+        silver,
+        silver 10px,
+        #dcdcdc 10px,
+        #dcdcdc 20px
+    );
+    cursor:pointer;
+    z-index:10;
+
+    touch-action:none;
+}
+.letter{
+    max-width:500px;
+    margin:25px auto;
+    background:#fffdf8;
+    padding:30px;
+    border-radius:20px;
+    border:3px dashed #ffb6c1;
+    box-shadow:0 10px 25px rgba(255,105,180,.3);
+    position:relative;
+}
+
+.letter::before{
+    content:"💌";
+    font-size:40px;
+    position:absolute;
+    top:-20px;
+    left:50%;
+    transform:translateX(-50%);
+}
+.miniHeart{
+    position:absolute;
+    font-size:25px;
+    animation:floatHeart 3s infinite ease-in-out;
+}
+
+.h1{top:10px;left:20px;}
+.h2{top:20px;right:20px;}
+.h3{bottom:10px;left:50%;}
+
+@keyframes floatHeart{
+    50%{
+        transform:translateY(-10px);
+    }
+}
+#typewriter{
+    font-size:20px;
+    line-height:1.8;
+    color:#ff1493;
+    text-shadow:0 0 8px rgba(255,20,147,.4);
+}
+.letter{
+    background:linear-gradient(#fff8dc,#fff2b0);
+    border:4px solid #d4af37;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+.rewardCard{
+    max-width:600px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:30px;
+    box-shadow:0 10px 30px rgba(255,105,180,.3);
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart h1">💖</div>
+<div class="heart h2">💕</div>
+<div class="heart h3">💗</div>
+
+<h1>🎁 Gift Hunter 🎁</h1>
+
+<p>Click the gift box to reveal your surprise!</p>
+
+<div id="giftBox" onclick="openScratch()">
+🎁
+</div>
+<div id="scratchCard">
+
+    <div id="cover"></div>
+
+    <div id="hiddenPrize">
+        🎉 SECRET GIFT 🎉
+    </div>
+
+</div>
+
+<div id="reward">
+
+<img src="photo6.jpg" class="rewardPhoto">
+
+<div class="letter">
+ 
+<div class="miniHeart h1">💖</div>
+<div class="miniHeart h2">💕</div>
+<div class="miniHeart h3">💗</div>
+<h2 class="secretTitle">💌 Secret Letter 💌</h2>
+
+<p id="typewriter"></p>
+ <h2>📜 Secret Letter 📜</h2>
+</div>
+
+</div>
+
+<button class="backBtn"
+onclick="window.location.href='index.html'">
+⬅ Back
+</button>
+
+<script>
+
+function openScratch(){
+
+    document.getElementById("giftBox").style.display = "none";
+
+    document.getElementById("scratchCard").style.display = "block";
+
+}
+
+function showReward(){
+
+    document.getElementById("scratchCard").style.display = "none";
+
+    document.getElementById("reward").style.display = "block";
+
+    startTypewriter();
+
+}
+
+let typed = false;
+
+function startTypewriter(){
+
+    if(typed) return;
+
+    typed = true;
+
+    const text =
+"A little secret for you...\n\nLife is made of small moments, and some of the best moments are the ones we never expect.\n\nI hope this surprise brought a smile to your face.\n\nWishing you endless happiness and success ahead. 💖";
+    const box = document.getElementById("typewriter");
+
+    let i = 0;
+
+    const typing = setInterval(()=>{
+
+        box.innerHTML += text.charAt(i);
+
+        i++;
+
+        if(i >= text.length){
+
+            clearInterval(typing);
+
+        }
+
+    },50);
+
+}
+let scratches = 0;
+
+const cover = document.getElementById("cover");
+
+cover.addEventListener("mousemove", scratch);
+cover.addEventListener("touchmove", scratch);
+
+function scratch(e){
+
+    e.preventDefault();
+
+    scratches++;
+
+    cover.style.opacity = 1 - (scratches / 50);
+
+    if(scratches > 50){
+
+        cover.style.display = "none";
+
+        setTimeout(showReward,1000);
+    }
+}
+</script>
+
+</body>
+</html>

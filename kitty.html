@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Catch The Kitty</title>
+
+<style>
+  body{
+background:linear-gradient(135deg,#ff9ad5,#ffd6f5);
+text-align:center;
+font-family:Arial;
+overflow:hidden;
+}
+
+#gameArea{
+width:90%;
+height:500px;
+margin:auto;
+position:relative;
+border-radius:25px;
+background:white;
+box-shadow:0 0 30px rgba(255,105,180,.4);
+overflow:hidden;
+}
+
+#kitty{
+    position:absolute;
+    cursor:pointer;
+    transition:.25s;
+}
+
+#kitty img{
+    width:120px;
+    height:auto;
+    user-select:none;
+    pointer-events:none;
+    filter:drop-shadow(0 8px 15px rgba(0,0,0,.25));
+}
+
+#kitty:hover{
+    transform:scale(1.1);
+}
+
+#kitty:hover{
+transform:scale(1.2);
+}
+
+#scoreBox,
+#timerBox{
+font-size:28px;
+font-weight:bold;
+margin:15px;
+}
+
+#winBox{
+display:none;
+margin-top:40px;
+}
+@keyframes runKitty{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+    100%{transform:translateY(0);}
+}
+
+#kitty img{
+    width:120px;
+    height:auto;
+    animation:runKitty .4s infinite;
+    filter:drop-shadow(0 8px 15px rgba(0,0,0,.25));
+}
+.back-btn{
+    margin-top:25px;
+    padding:14px 35px;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+
+    font-size:20px;
+    font-weight:bold;
+    color:white;
+
+    background:linear-gradient(
+        135deg,
+        #ff4da6,
+        #ff1493
+    );
+
+    box-shadow:
+        0 0 15px rgba(255,20,147,.5),
+        0 0 30px rgba(255,20,147,.3);
+
+    transition:.3s;
+}
+
+.back-btn:hover{
+    transform:translateY(-5px) scale(1.08);
+
+    box-shadow:
+        0 0 25px rgba(255,20,147,.8),
+        0 0 50px rgba(255,20,147,.5);
+}
+
+.back-btn:active{
+    transform:scale(.95);
+}
+</style>
+</head>
+
+<body>
+
+<h1>🐱 Catch The Kitty 🐱</h1>
+
+<div id="scoreBox">
+Score: <span id="score">0</span>/5
+</div>
+
+<div id="timerBox">
+⏳ 15
+</div>
+
+<div id="gameArea">
+
+<div id="kitty">
+    <img src="kitty.png" alt="Kitty">
+</div>
+
+</div>
+
+<div id="winBox">
+
+<h1>🎉 YOU WIN 🎉</h1>
+
+<img src="tulip-bouquet.png" width="250">
+
+<p>💐 Beautiful Bouquet Unlocked 💐</p>
+
+<button class="back-btn" onclick="history.back()">
+⬅ Back To Party
+</button>
+
+</div>
+
+<script>
+
+const kitty =
+document.getElementById("kitty");
+
+const scoreText =
+document.getElementById("score");
+
+const timerText =
+document.getElementById("timerBox");
+
+const winBox =
+document.getElementById("winBox");
+
+let score = 0;
+
+function moveKitty(){
+
+const x =
+Math.random()*700;
+
+const y =
+Math.random()*350;
+
+kitty.style.left = x+"px";
+kitty.style.top = y+"px";
+
+}
+
+setInterval(moveKitty,700);
+
+kitty.onclick = ()=>{
+
+score++;
+
+scoreText.innerHTML = score;
+
+moveKitty();
+
+if(score >= 5){
+
+document.getElementById("gameArea").style.display="none";
+
+winBox.style.display="block";
+
+clearInterval(countdown);
+
+}
+};
+let time = 15;
+
+const countdown = setInterval(()=>{
+
+time--;
+
+timerText.innerHTML =
+"⏳ "+time;
+
+if(time<=0){
+
+clearInterval(countdown);
+
+if(score<10){
+
+alert("😢 Time Over!");
+
+location.reload();
+
+}
+
+}
+
+},1000);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fun Party</title>
+<style>
+body{
+background:#87ceeb;
+text-align:center;
+font-family:Arial;
+padding:50px;
+}
+body{
+    background:linear-gradient(135deg,#87ceeb,#ffd700);
+    text-align:center;
+    font-family:Arial;
+    padding:30px;
+}
+
+.party-title{
+    font-size:45px;
+    color:white;
+    text-shadow:0 0 15px white;
+}
+
+.dance-floor{
+    font-size:60px;
+    animation:bounce 1s infinite alternate;
+}
+
+@keyframes bounce{
+    from{transform:translateY(0);}
+    to{transform:translateY(-15px);}
+}
+
+.party-text{
+    font-size:22px;
+    margin:20px;
+}
+
+.gift-area{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.gift{
+    font-size:80px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.gift:hover{
+    transform:scale(1.2) rotate(10deg);
+}
+
+.back-btn{
+    margin-top:30px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    cursor:pointer;
+}
+#bouquetPrize{
+
+    margin-top:30px;
+
+    background:white;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    max-width:450px;
+
+    margin-left:auto;
+
+    margin-right:auto;
+
+    box-shadow:
+    0 0 20px rgba(255,105,180,.5);
+
+    animation:popUp .8s ease;
+}
+
+@keyframes popUp{
+
+    from{
+        transform:scale(0);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+#bouquetPopup{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.7);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.popup-box{
+    background:white;
+    padding:25px;
+    border-radius:25px;
+    text-align:center;
+    animation:popUp .5s ease;
+}
+
+.bouquet-img{
+    width:250px;
+    max-width:90%;
+    border-radius:20px;
+}
+
+.popup-box button{
+    padding:10px 25px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<h1 class="party-title">🎈 Fun Party 🎈</h1>
+
+<div class="dance-floor">
+💃 🕺 🎉 💃 🕺 🎉
+</div>
+
+<p class="party-text">
+Welcome to Manvi's Birthday Party!
+Let's celebrate with music, gifts and fun! 🎂
+</p>
+
+<div class="gift-area">
+
+    <div class="gift" onclick="checkGift(1)">🎁</div>
+    <div class="gift" onclick="checkGift(2)">🎁</div>
+    <div class="gift" onclick="checkGift(3)">🎁</div>
+    <div class="gift" onclick="checkGift(4)">🎁</div>
+    <div class="gift" onclick="checkGift(5)">🎁</div>
+    <div class="gift" onclick="checkGift(6)">🎁</div>
+
+</div>
+
+<h2 id="result"></h2>
+
+<button class="back-btn" onclick="history.back()">
+⬅ Back
+</button>
+<div id="bouquetPopup">
+
+    <div class="popup-box">
+
+        <h2>🎉 Congratulations! 🎉</h2>
+
+        <p>You Won A Beautiful Bouquet For Manvi 💐</p>
+
+        <img src="tulip-bouquet.png" class="bouquet-img">
+
+        <br><br>
+
+        <button onclick="closeBouquet()">
+            Close
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+const winningGift = 4;
+
+function checkGift(num){
+
+    const result =
+    document.getElementById("result");
+
+    if(num === winningGift){
+
+        result.innerHTML =
+        "🎉 Congratulations! You Found The Birthday Gift!";
+
+        document.getElementById(
+        "bouquetPopup"
+        ).style.display = "flex";
+
+    }else{
+
+        result.innerHTML =
+        "❌ Wrong Gift! Try Again";
+
+    }
+
+}
+
+function closeBouquet(){
+
+    document.getElementById(
+    "bouquetPopup"
+    ).style.display = "none";
+
+}
+</script>
+</body>
+</html>

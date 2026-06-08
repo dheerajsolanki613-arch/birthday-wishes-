@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>First Birthday</title>
+<style>
+body{
+    background:linear-gradient(
+    -45deg,
+    #ff9a9e,
+    #fad0c4,
+    #ffd1ff,
+    #a1c4fd
+    );
+
+    background-size:400% 400%;
+
+    animation:bgMove 12s ease infinite;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+.card{
+background:white;
+padding:30px;
+border-radius:20px;
+max-width:500px;
+margin:auto;
+box-shadow:0 0 20px pink;
+}
+.hero{
+    padding:50px 20px;
+
+    background:rgba(255,255,255,.25);
+
+    backdrop-filter:blur(10px);
+
+    border-radius:30px;
+
+    width:90%;
+    max-width:700px;
+
+    margin:auto;
+
+    box-shadow:
+    0 10px 30px rgba(255,255,255,.3);
+}
+section,
+.music-card,
+.letter-card,
+#quiz,
+#wishWall{
+    background:white;
+
+    border-radius:25px;
+
+    padding:25px;
+
+    margin:25px auto;
+
+    width:90%;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.12);
+}
+.heart{
+    position:fixed;
+    bottom:-50px;
+    left:10%;
+
+    font-size:30px;
+
+    animation:heartFloat 8s linear infinite;
+}
+
+@keyframes heartFloat{
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(-120vh);
+    }
+}
+.photo{
+    width:140px;
+    height:140px;
+
+    border-radius:20px;
+
+    border:4px solid white;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,.15);
+
+    transition:.4s;
+}
+
+.photo:hover{
+    transform:scale(1.1) rotate(3deg);
+}
+#welcomeScreen{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493
+    );
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    color:white;
+}
+
+#welcomeScreen button{
+    padding:15px 35px;
+    border:none;
+    border-radius:50px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+body{
+    text-align:center;
+    font-family:Arial,sans-serif;
+    padding:30px;
+}
+.back-btn{
+    padding:15px 35px;
+
+    border:none;
+    border-radius:50px;
+
+    font-size:20px;
+    font-weight:bold;
+
+    color:white;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+    135deg,
+    #ff69b4,
+    #ff1493
+    );
+
+    box-shadow:
+    0 0 15px rgba(255,20,147,.5),
+    0 0 30px rgba(255,20,147,.3);
+
+    transition:.3s;
+}
+
+.back-btn:hover{
+    transform:translateY(-5px) scale(1.05);
+
+    box-shadow:
+    0 0 25px rgba(255,20,147,.8),
+    0 0 50px rgba(255,20,147,.5);
+}
+</style>
+</head>
+<body>
+<div id="welcomeScreen">
+
+<h1>🎂 Happy Birthday Manvi 🎂</h1>
+
+<button onclick="startBirthday()">
+Enter Celebration
+</button>
+
+</div>
+<div class="hero">
+
+<h1>🎂 Happy Birthday Manvi 🎂</h1>
+
+<p>✨ A Special Day For A Special Person ✨</p>
+
+</div>
+
+<img src="photo5.jpg" class="photo">
+
+<br><br>
+
+<button class="back-btn" onclick="history.back()">
+💖 Return To Birthday Card
+</button>
+<div class="heart">💖</div>
+<script>
+function startBirthday(){
+    document.getElementById("welcomeScreen").style.display = "none";
+}
+</script>
+</body>
+</html>

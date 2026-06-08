@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Card</title>
+
+<style>
+body{
+    text-align:center;
+    font-family:Arial;
+    padding-top:100px;
+
+    background:linear-gradient(
+        135deg,
+        #ff9ecf,
+        #ffd6e8,
+        #fff0f6
+    );
+
+    min-height:100vh;
+}
+
+.card{
+    width:90%;
+    max-width:500px;
+    margin:auto;
+}
+
+#balloons{
+    font-size:40px;
+    margin-top:20px;
+    animation:float 2s infinite alternate;
+}
+
+@keyframes float{
+    from{ transform:translateY(0); }
+    to{ transform:translateY(-20px); }
+}
+
+#confettiContainer{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+.confetti{
+    position:absolute;
+    font-size:24px;
+    animation:fall 3s linear forwards;
+}
+
+@keyframes fall{
+    from{ transform:translateY(-50px); }
+    to{ transform:translateY(100vh); }
+}
+
+#fireworks{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+}
+
+/* FIX 4: .firework defined once cleanly — removed duplicate rule */
+.firework{
+    position:absolute;
+    font-size:40px;
+    animation:bigBoom 1.5s forwards;
+    pointer-events:none;
+}
+
+@keyframes explode{
+    0%{ opacity:1; transform:scale(0); }
+    100%{ opacity:0; transform:scale(3); }
+}
+
+@keyframes bigBoom{
+    0%{ transform:scale(0); opacity:1; }
+    50%{ transform:scale(2); opacity:1; }
+    100%{ transform:scale(4); opacity:0; }
+}
+
+#giftBox{
+    font-size:60px;
+    margin-top:30px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#giftBox:hover{
+    transform:scale(1.2);
+}
+
+#timeline{
+    margin-top:20px;
+}
+
+.memory{
+    background:linear-gradient(135deg,#ffffff,#ffe6f2);
+    color:#333;
+    padding:18px;
+    margin:15px auto;
+    width:85%;
+    border-radius:20px;
+    cursor:pointer;
+    transition:.4s;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 5px 15px rgba(255,105,180,.3), 0 0 15px rgba(255,182,193,.4);
+    border:3px solid rgba(255,255,255,.7);
+}
+
+.memory:hover{
+    transform:translateY(-8px) scale(1.05);
+    box-shadow:0 10px 25px rgba(255,105,180,.5), 0 0 25px rgba(255,105,180,.4);
+}
+
+#gallery{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.photo{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.photo:hover{
+    transform:scale(1.1);
+}
+
+audio{
+    margin-top:20px;
+    width:280px;
+}
+
+#letter{
+    background:white;
+    color:black;
+    max-width:400px;
+    margin:20px auto;
+    padding:20px;
+    border-radius:15px;
+    text-align:left;
+    line-height:1.6;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+#particleContainer{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.particle{
+    position:absolute;
+    font-size:25px;
+    animation:particleFloat 8s linear forwards;
+}
+
+@keyframes particleFloat{
+    from{ transform:translateY(100vh); opacity:0; }
+    20%{ opacity:1; }
+    100%{ transform:translateY(-100px); opacity:0; }
+}
+
+/* THEME SECTION */
+.theme-container{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin:25px 0;
+}
+
+.theme-btn{
+    position:relative;
+    padding:15px 35px;
+    border:none;
+    border-radius:50px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.4s;
+    color:white;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.theme-btn::before{
+    content:"";
+    position:absolute;
+    top:-50%;
+    left:-50%;
+    width:200%;
+    height:200%;
+    background:linear-gradient(45deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:rotate(25deg);
+    transition:.6s;
+}
+
+.theme-btn:hover::before{
+    left:100%;
+}
+
+.theme-btn:hover{
+    transform:translateY(-5px) scale(1.08);
+}
+
+#pinkTheme{
+    background:linear-gradient(135deg,#ff4da6,#ff85c1);
+    box-shadow:0 0 15px #ff4da6, 0 0 30px #ff85c1;
+}
+
+#blueTheme{
+    background:linear-gradient(135deg,#00bfff,#66d9ff);
+    box-shadow:0 0 15px #00bfff, 0 0 30px #66d9ff;
+}
+
+/* FIX 2: Added missing #darkTheme styling */
+#darkTheme{
+    background:linear-gradient(135deg,#333,#555);
+    box-shadow:0 0 15px #333, 0 0 30px #555;
+}
+
+/* FIX 4: Added perspective to parent so rotateY looks 3D */
+#birthdayCard{
+    width:90%;
+    max-width:550px;
+    height:700px;
+    margin:30px auto;
+    position:relative;
+    perspective:1200px;
+    cursor:pointer;
+}
+
+#cardInner{
+    position:relative;
+    width:100%;
+    height:100%;
+}
+
+#cardFront{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background:linear-gradient(135deg,#ff69b4,#ff1493);
+    border-radius:25px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:30px;
+    font-weight:bold;
+
+    z-index:10;
+    transition:1s;
+    transform-origin:left center;
+    backface-visibility:hidden;
+}
+
+#cardBack{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background:#fff7fa;
+    border:3px dashed #f7b6c8;
+    border-radius:25px;
+
+    padding:25px;
+    box-sizing:border-box;
+
+    overflow:auto;
+    z-index:1;
+}
+
+#birthdayCard.open #cardFront{
+    transform:rotateY(-180deg);
+}
+
+.innerBorder{
+    position:absolute;
+    top:15px;
+    left:15px;
+    right:15px;
+    bottom:15px;
+    border:3px dashed #f3bfd0;
+    border-radius:25px;
+    pointer-events:none;
+}
+
+.topDecor{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.envelope{
+    width:170px;
+    height:auto;
+}
+
+.quillTop{
+    width:130px;
+    height:auto;
+}
+
+#countdown{
+    font-size:60px;
+    font-weight:bold;
+    margin:20px;
+    color:#ff4081;
+}
+
+#quiz{
+    background:linear-gradient(135deg,#fff,#ffe6f2);
+    max-width:450px;
+    margin:30px auto;
+    padding:25px;
+    border-radius:25px;
+    box-shadow:0 10px 25px rgba(255,105,180,.3);
+    border:3px solid #ffb6d9;
+    text-align:center;
+    animation:quizGlow 2s infinite alternate;
+}
+
+@keyframes quizGlow{
+    from{
+        box-shadow:0 10px 25px rgba(255,105,180,.3);
+    }
+    to{
+        box-shadow:0 10px 35px rgba(255,20,147,.6);
+    }
+}
+
+#quiz p{
+    font-size:22px;
+    font-weight:bold;
+    color:#ff1493;
+}
+
+#quiz button{
+    padding:12px 25px;
+    margin:8px;
+    border:none;
+    border-radius:50px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(135deg,#ff69b4,#ff1493);
+    color:white;
+    transition:.3s;
+}
+
+#quiz button:hover{
+    transform:scale(1.1);
+}
+
+#quizResult{
+    margin-top:15px;
+    font-size:22px;
+    font-weight:bold;
+}
+
+#quiz button{
+    padding:10px 20px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+#slideshow{
+    margin:20px auto;
+    width:300px;
+}
+
+#slideImage{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+    border-radius:15px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+#wishWall{
+    background:linear-gradient(135deg,#fff5fa,#ffe6f2);
+    max-width:500px;
+    margin:20px auto;
+    padding:25px;
+    border-radius:25px;
+    border:3px dashed #ff8fbf;
+    box-shadow:0 8px 20px rgba(255,105,180,.25);
+}
+
+#wishInput{
+    width:85%;
+    padding:15px;
+    border:2px solid #ffb6d9;
+    border-radius:30px;
+    font-size:18px;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+#wishWall button{
+    padding:14px 35px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #ff69b4,
+        #ff1493
+    );
+
+    box-shadow:0 5px 15px rgba(255,20,147,.4);
+    transition:.3s;
+}
+
+#wishWall button:hover{
+    transform:scale(1.08);
+}
+
+.wish{
+    background:white;
+    padding:15px;
+    border-radius:18px;
+    min-width:140px;
+    max-width:220px;
+    box-shadow:0 5px 15px rgba(255,105,180,.25);
+    animation:popWish .4s ease;
+    font-weight:bold;
+}
+
+@keyframes popWish{
+    from{
+        transform:scale(.5);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+#badges{
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px;
+}
+
+.badge{
+    background:linear-gradient(
+        135deg,
+        #ffd700,
+        #ffb700
+    );
+
+    padding:18px 25px;
+    border-radius:20px;
+
+    font-size:20px;
+    font-weight:bold;
+
+    box-shadow:0 5px 15px rgba(255,215,0,.4);
+
+    transition:.3s;
+}
+
+.badge:hover{
+    transform:translateY(-5px) scale(1.05);
+}
+
+#finaleButton{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#ff4da6,#ff85c1);
+    color:white;
+    font-weight:bold;
+}
+
+#finaleMessage{
+    margin-top:20px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.birthday-btn{
+    padding:18px 45px;
+    font-size:22px;
+    font-weight:bold;
+    color:white;
+    border:none;
+    border-radius:50px;
+    cursor:pointer;
+    background:linear-gradient(45deg,#ff0080,#ff4d4d,#ff9900);
+    background-size:300% 300%;
+    animation:gradientMove 4s infinite, pulse 2s infinite;
+    box-shadow:0 0 20px rgba(255,0,128,.7), 0 0 40px rgba(255,0,128,.5);
+    transition:.3s;
+}
+
+.birthday-btn:hover{
+    transform:translateY(-5px) scale(1.08);
+    box-shadow:0 0 30px rgba(255,0,128,.9), 0 0 60px rgba(255,0,128,.7);
+}
+
+@keyframes gradientMove{
+    0%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+    100%{ background-position:0% 50%; }
+}
+
+@keyframes pulse{
+    0%{ transform:scale(1); }
+    50%{ transform:scale(1.05); }
+    100%{ transform:scale(1); }
+}
+
+#birthdayPopup{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.8);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.popupBox{
+    background:linear-gradient(135deg,#ff6ec4,#7873f5);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    color:white;
+    box-shadow:0 0 20px white;
+}
+
+.popupBox button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:15px;
+    background:white;
+    color:#ff1493;
+}
+
+#cakeContainer{
+    text-align:center;
+    margin:30px auto;
+}
+
+#fancyCake{
+    width:100%;
+    max-width:320px;
+    height:auto;
+    display:block;
+    margin:auto;
+    cursor:pointer;
+}
+
+#drawPage{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:white;
+    z-index:9999;
+    padding-top:30px;
+    text-align:center;
+}
+
+#canvas{
+    border:3px solid hotpink;
+    border-radius:15px;
+    background:white;
+    touch-action:none;
+}
+
+#drawPage button{
+    padding:10px 20px;
+    margin:10px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.section-title{
+    font-size:40px;
+    font-weight:bold;
+    margin-top:30px;
+}
+
+/* MUSIC CARD — FIX 3: merged all duplicate .music-card / .music-player rules into one each */
+.music-card{
+    width:90%;
+    max-width:700px;
+    margin:20px auto;
+    padding:25px;
+    background:white;
+    border-radius:30px;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(255,105,180,.3);
+}
+
+.music-player{
+    flex:1;
+    min-width:220px;
+    text-align:center;
+}
+
+.music-player audio{
+    width:100%;
+    max-width:100%;
+}
+
+.music-player h3{
+    color:#ff1493;
+    font-size:28px;
+    margin:5px 0;
+    word-wrap:break-word;
+}
+
+.music-player p{
+    margin-bottom:15px;
+    font-size:18px;
+}
+
+/* TEDDY / BOUQUET — merged duplicates */
+.teddy{
+    width:180px;
+    height:auto;
+    object-fit:contain;
+    animation:dance 1.5s infinite ease-in-out;
+}
+
+.bouquet{
+    width:150px;
+    height:auto;
+}
+
+@keyframes dance{
+    0%{ transform:translateY(0) rotate(0deg); }
+    50%{ transform:translateY(-8px) rotate(8deg); }
+    100%{ transform:translateY(0) rotate(0deg); }
+}
+
+.giftRow{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:25px;
+    flex-wrap:nowrap;
+}
+
+.musicBox{
+    width:90%;
+    max-width:450px;
+    margin:20px auto;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:18px;
+    border-radius:50px;
+    background:linear-gradient(135deg,#ff69b4,#ff1493);
+    box-shadow:0 0 20px rgba(255,20,147,.5), 0 0 40px rgba(255,20,147,.3);
+}
+
+#playBtn{
+    width:60px;
+    height:60px;
+    border:none;
+    border-radius:50%;
+    font-size:22px;
+    cursor:pointer;
+    background:#fff5fa;
+    color:#ff4d94;
+    box-shadow:0 0 8px rgba(255,105,180,.25);
+    transition:.3s;
+}
+
+/* FIX 3: merged duplicate #playBtn:hover into one rule */
+#playBtn:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 12px rgba(255,105,180,.35);
+}
+
+.songInfo{
+    color:white;
+    font-size:18px;
+    font-weight:bold;
+    flex:1;
+}
+
+#progress{
+    width:120px;
+}
+
+/* LETTER CARD — FIX 3: merged all duplicate .letter-card rules into one */
+.letter-card{
+    position:relative;
+    background:white;
+    width:90%;
+    max-width:700px;
+    margin:30px auto;
+    padding:35px;
+    border-radius:30px;
+    border:4px dashed #ff8fbf;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:wrap;
+    box-shadow:0 10px 25px rgba(255,105,180,.25);
+}
+
+.letter-content{
+    position:relative;
+    z-index:2;
+    flex:1;
+    min-width:220px;
+    text-align:center;
+}
+
+.letter-content p{
+    font-size:22px;
+    line-height:1.6;
+}
+
+.letter-content h3{
+    text-align:center;
+    color:#ff1493;
+    font-size:30px;
+}
+
+.letter-title{
+    font-size:36px;
+    color:#ff1493;
+    text-shadow:0 0 10px rgba(255,20,147,.4);
+}
+
+/* LETTER ICON / QUILL — merged into one rule */
+.letter-icon,
+.quill{
+    position:relative;
+    z-index:2;
+    width:80px;
+    height:80px;
+    object-fit:contain;
+}
+
+.corner-flower{
+    position:absolute;
+    width:90px;
+    height:auto;
+    z-index:1;
+    opacity:0.9;
+}
+
+.top-left{ top:8px; left:8px; }
+.top-right{ top:8px; right:8px; transform:scaleX(-1); }
+.bottom-left{ bottom:8px; left:8px; }
+.bottom-right{ bottom:8px; right:8px; transform:scaleX(-1); }
+
+#cardBack img{
+    animation:floatFlower 3s ease-in-out infinite;
+}
+
+@keyframes floatFlower{
+    0%{ transform:translateY(0); }
+    50%{ transform:translateY(-10px); }
+    100%{ transform:translateY(0); }
+}
+
+/* FIX 3: merged two @media(max-width:600px) blocks into one */
+@media(max-width:600px){
+    .music-card{
+        flex-direction:column;
+        text-align:center;
+    }
+    .teddy{
+        width:140px;
+        height:140px;
+    }
+    .letter-card{
+        padding:25px;
+        flex-direction:row;
+    }
+    .letter-icon,
+    .quill{
+        width:50px;
+        height:50px;
+    }
+    .letter-content p{
+        font-size:15px;
+    }
+    .letter-content h3{
+        font-size:20px;
+    }
+    .corner-flower{
+        width:65px;
+    }
+}
+
+/* COUNTDOWN BOXES */
+.countdown-container{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin:30px auto;
+}
+
+.time-box{
+    width:90px;
+    height:90px;
+    background:white;
+    border-radius:20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 5px 20px rgba(255,105,180,.3);
+}
+
+.time-box span{
+    font-size:30px;
+    font-weight:bold;
+    color:#ff1493;
+}
+
+.time-box p{
+    margin:0;
+    font-size:14px;
+}
+#birthdayMessage{
+    margin-top:20px;
+    font-size:30px;
+    font-weight:bold;
+    color:#ff1493;
+    text-align:center;
+}
+#birthdayLetter{
+    max-width:700px;
+    margin:30px auto;
+    padding:35px;
+    position:relative;
+
+    background:linear-gradient(135deg,#fff8fb,#ffe4ef);
+    border-radius:30px;
+
+    box-shadow:0 10px 30px rgba(255,105,180,.3);
+
+    border:4px solid #ffb6d5;
+    <img src="flower.png" class="flower top-left-flower">
+<img src="flower.png" class="flower top-right-flower">
+<img src="flower.png" class="flower bottom-left-flower">
+<img src="flower.png" class="flower bottom-right-flower">
+}
+
+.letter-border{
+    position:absolute;
+    top:12px;
+    left:12px;
+    right:12px;
+    bottom:12px;
+
+    border:3px dashed #ff8fbf;
+    border-radius:22px;
+
+    pointer-events:none;
+}
+
+#birthdayMessage{
+    position:relative;
+    z-index:2;
+
+    font-size:24px;
+    line-height:1.9;
+    color:#d63384;
+
+    text-align:left;
+    white-space:pre-wrap;
+}
+.flower{
+    position:absolute;
+    width:70px;
+    animation:floatFlower 3s ease-in-out infinite;
+}
+
+.top-left-flower{
+    top:-15px;
+    left:-15px;
+}
+
+.top-right-flower{
+    top:-15px;
+    right:-15px;
+}
+
+.bottom-left-flower{
+    bottom:-15px;
+    left:-15px;
+}
+
+.bottom-right-flower{
+    bottom:-15px;
+    right:-15px;
+}
+
+@keyframes floatFlower{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0);}
+}
+.letterHeading{
+    text-align:center;
+    font-size:36px;
+    color:#ff1493;
+    text-shadow:0 0 10px pink,
+                 0 0 20px hotpink;
+    margin-bottom:20px;
+}
+.heart{
+    position:absolute;
+    font-size:22px;
+    opacity:0.7;
+}
+
+.heart1{
+    top:20px;
+    right:20px;
+}
+
+.heart2{
+    bottom:20px;
+    left:20px;
+}
+
+.heart3{
+    bottom:20px;
+    right:20px;
+}
+@keyframes heartFloat{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-12px);}
+    100%{transform:translateY(0);}
+}
+.finalBtn{
+    padding:15px 35px;
+    border:none;
+    border-radius:50px;
+    font-size:20px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+
+    background:linear-gradient(135deg,#ff1493,#ff69b4);
+
+    box-shadow:
+    0 5px 15px rgba(255,20,147,.4);
+
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.08);
+        box-shadow:
+        0 0 25px rgba(255,20,147,.7);
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="card">
+
+<h1>🎂 Happy Birthday 🎂</h1>
+
+<p>Have an amazing day!</p>
+
+<button class="birthday-btn" onclick="showWish()">
+🎉 CLICK ME 🎉
+</button>
+
+<!-- FIX 5: Removed duplicate bare balloon <div> that had no ID or styling -->
+<div id="balloons">
+🎈 🎈 🎈
+</div>
+
+<div id="cakeContainer">
+<img id="fancyCake" src="fancy-cake.png" alt="Birthday Cake">
+</div>
+
+</div>
+
+<div id="giftBox">
+🎁
+</div>
+
+<h2>📖 Birthday Memories</h2>
+
+<div id="timeline">
+
+<div class="memory" onclick="openBirthdayPage()">
+🎂 First Birthday
+</div>
+
+<div class="memory" onclick="openPartyPage()">
+🎈 Fun Party
+</div>
+
+<div class="memory" onclick="openGiftPage()">
+🎁 Special Gifts
+</div>
+
+</div>
+
+<h2>📸 Photo Gallery</h2>
+
+<div id="gallery">
+<img class="photo" src="photo1.jpg" alt="Photo 1">
+<img class="photo" src="photo2.jpg" alt="Photo 2">
+<img class="photo" src="photo3.jpg" alt="Photo 3">
+</div>
+
+<div class="music-card">
+
+<div class="giftRow">
+    <img src="teddy.png" class="teddy" alt="Teddy">
+    <img src="tulip-bouquet.png" class="bouquet" alt="Bouquet">
+</div>
+
+<div class="music-player">
+
+<h3>Happy Birthday To You 💖</h3>
+
+<p>Best Birthday Song Ever 🎂</p>
+
+<div class="musicBox">
+<button id="playBtn">▶</button>
+<div class="songInfo">🎵 Happy Birthday Song</div>
+<input type="range" id="progress" value="0">
+</div>
+
+<audio id="birthdayMusic">
+<source src="birthday.mp3">
+</audio>
+
+</div>
+
+</div>
+
+<!-- Letter Card -->
+<div class="letter-card">
+
+    <img src="flower.png" class="corner-flower top-left" alt="">
+    <img src="flower.png" class="corner-flower top-right" alt="">
+    <img src="flower.png" class="corner-flower bottom-left" alt="">
+    <img src="flower.png" class="corner-flower bottom-right" alt="">
+
+    <img src="letter.png" class="letter-icon" alt="Letter">
+
+    <div class="letter-content">
+        <p><b>Dear Manvi,</b></p>
+        <p>Wishing you a wonderful birthday filled with happiness, fun and success.</p>
+        <p>May all your dreams come true! ✨</p>
+        <h3>🎂 Happy Birthday Manvi 🎂</h3>
+    </div>
+
+    <img src="quill.png" class="quill" alt="Quill">
+
+</div>
+
+<div id="particleContainer"></div>
+
+<h2>🎨 Change Theme</h2>
+
+<div class="theme-container">
+<button id="pinkTheme" class="theme-btn">🌸 Pink</button>
+<button id="blueTheme" class="theme-btn">💙 Blue</button>
+<button id="darkTheme" class="theme-btn">🌙 Dark</button>
+</div>
+
+<h2>📖 Open Birthday Card</h2>
+
+<div id="birthdayCard">
+    <div id="cardInner">
+        <div id="cardFront">
+           🎁 A Special Surprise Awaits 🎁
+Tap to Open 💖
+        </div>
+
+        <div id="cardBack">
+            <div class="innerBorder"></div>
+            <div class="topDecor">
+                <img src="envelope.png" class="envelope" alt="Envelope">
+                <img src="quill.png" class="quillTop" alt="Quill">
+            </div>
+
+            <h2 class="letter-title">💖 Dear Manvi 💖</h2>
+
+            <p>Wishing you a wonderful birthday filled with happiness, success, love and beautiful memories.</p>
+
+            <p style="color:#ff4d94;font-size:24px;">✨ May all your dreams come true! ✨</p>
+
+            <hr>
+
+            <img src="happy-birthday.png" width="250" style="margin-top:15px;" alt="Happy Birthday">
+        </div>
+    </div>
+</div>
+
+<h2>⏳ Birthday Countdown</h2>
+
+<div class="countdown-container">
+
+    <div class="time-box">
+        <span id="days">0</span>
+        <p>Days</p>
+    </div>
+<div id="birthdayLetter">
+    <div class="letter-border"></div>
+    <h2 class="letterHeading">💖 Birthday 💖</h2>
+    <div id="birthdayLetter">
+
+    <div class="heart heart1">💖</div>
+    <div class="heart heart2">💕</div>
+    <div class="heart heart3">💗</div>
+
+    <div id="birthdayMessage"></div>
+</div>
+    <div id="birthdayMessage"></div>
+</div>
+    <div class="time-box">
+        <span id="hours">0</span>
+        <p>Hours</p>
+    </div>
+
+    <div class="time-box">
+        <span id="minutes">0</span>
+        <p>Minutes</p>
+    </div>
+
+    <div class="time-box">
+        <span id="seconds">0</span>
+        <p>Seconds</p>
+    </div>
+
+</div>
+
+<img src="happy-birthday.png" width="280" style="margin:20px auto;display:block;" alt="Happy Birthday">
+
+<h2>🎮 Birthday Quiz</h2>
+
+<div id="quiz">
+    <p>How old is Manvi now?</p>
+    <button onclick="checkAnswer(14)">14</button>
+    <button onclick="checkAnswer(15)">15</button>
+    <button onclick="checkAnswer(16)">16</button>
+    <p id="quizResult"></p>
+</div>
+
+<h2>🖼️ Memory Slideshow</h2>
+
+<div id="slideshow">
+<img id="slideImage" src="photo1.jpg" alt="Memory Photo">
+</div>
+
+<h2>💬 Guest Wishes Wall</h2>
+
+<div id="wishWall">
+<input type="text" id="wishInput" placeholder="Write your wish...">
+<button onclick="addWish()">Add Wish</button>
+<div id="wishList"></div>
+</div>
+
+<h2>🏆 Birthday Badges</h2>
+
+<div id="badges">
+<div class="badge" onclick="window.location.href='gallery.html'">
+    🎂 Birthday Star
+</div>
+<div class="badge" onclick="window.location.href='gifthunter.html'">
+🎁 Gift Hunter
+</div>
+<div class="badge" onclick="window.location.href='partyqueen.html'">🎉 Party Queen </div>
+</div>
+
+<h2>🎉 Grand Finale</h2>
+
+<!-- FIX 8: Added onclick to finaleButton — was completely non-functional -->
+<button class="finalBtn"
+onclick="window.location.href='finalcelebration.html'">
+🌟 Start Final Celebration 🌟
+</button>
+
+<div id="finaleMessage"></div>
+
+<div id="confettiContainer"></div>
+<div id="fireworks"></div>
+
+<div id="drawPage">
+<h2>🎨 Draw Your Birthday Wish</h2>
+<canvas id="canvas" width="350" height="400"></canvas>
+<br><br>
+<button onclick="clearCanvas()">🗑 Clear Drawing</button>
+<button onclick="closeDrawPage()">❌ Close</button>
+</div>
+
+<!-- Popup placed here (before </body>) so it's always in the DOM -->
+<div id="birthdayPopup">
+<div class="popupBox">
+<h1>🎉 HAPPY BIRTHDAY MANVI 🎉</h1>
+<p>Wishing you happiness, success, love and lots of wonderful memories! 🎂🎁🎈</p>
+<button onclick="closePopup()">✨ CLOSE ✨</button>
+</div>
+</div>
+<script>
+
+function showWish(){
+    document.getElementById("birthdayPopup").style.display = "flex";
+    for(let i=0;i<10;i++){
+        setTimeout(createFirework, i*100);
+    }
+}
+
+function closePopup(){
+    document.getElementById("birthdayPopup").style.display = "none";
+}
+
+const balloons = document.getElementById("balloons");
+balloons.onclick = ()=>{
+    alert("🎈 Balloon clicked!");
+};
+
+function createConfetti(){
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.innerHTML = "🎊";
+    confetti.style.left = Math.random() * window.innerWidth + "px";
+    document.getElementById("confettiContainer").appendChild(confetti);
+    setTimeout(()=>{ confetti.remove(); }, 3000);
+}
+
+setInterval(createConfetti, 1500);
+
+function createFirework(){
+    const firework = document.createElement("div");
+    firework.className = "firework";
+    firework.innerHTML = "🎆";
+    firework.style.left = Math.random() * window.innerWidth + "px";
+    firework.style.top = Math.random() * 300 + "px";
+    document.getElementById("fireworks").appendChild(firework);
+    setTimeout(()=>{ firework.remove(); }, 1500);
+}
+
+const cake = document.getElementById("fancyCake");
+if(cake){
+    cake.onclick = ()=>{
+        document.getElementById("drawPage").style.display = "block";
+    };
+}
+
+const giftBox = document.getElementById("giftBox");
+giftBox.onclick = ()=>{
+    window.location.href = "letter.html";
+};
+
+// FIX 7: photo.innerText → photo.alt (img elements have no innerText)
+const photos = document.querySelectorAll(".photo");
+photos.forEach(photo=>{
+    photo.onclick = ()=>{
+        alert("Photo clicked: " + photo.alt);
+    };
+});
+
+// FIX 6: Use proper variable reference instead of implicit global birthdayMusic
+const music = document.getElementById("birthdayMusic");
+
+music.addEventListener("play",()=>{
+    const msg = document.createElement("div");
+    msg.innerHTML = "🎵 Playing Birthday Song";
+    msg.style.position = "fixed";
+    msg.style.top = "20px";
+    msg.style.left = "50%";
+    msg.style.transform = "translateX(-50%)";
+    msg.style.padding = "12px 25px";
+    msg.style.background = "#ff1493";
+    msg.style.color = "white";
+    msg.style.borderRadius = "30px";
+    msg.style.zIndex = "9999";
+    document.body.appendChild(msg);
+    setTimeout(()=>{ msg.remove(); }, 2000);
+});
+
+const letterCard = document.querySelector(".letter-card");
+if(letterCard){
+    letterCard.onclick = ()=>{
+        alert("💌 Thank you for reading the birthday letter!");
+    };
+}
+
+const particleContainer = document.getElementById("particleContainer");
+
+function createParticle(){
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    const icons = ["✨","⭐","🌟"];
+    particle.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+    particle.style.left = Math.random() * window.innerWidth + "px";
+    particleContainer.appendChild(particle);
+    setTimeout(()=>{ particle.remove(); }, 8000);
+}
+
+setInterval(createParticle, 2000);
+
+const pinkTheme = document.getElementById("pinkTheme");
+const blueTheme = document.getElementById("blueTheme");
+const darkTheme = document.getElementById("darkTheme");
+
+pinkTheme.onclick = ()=>{
+    document.body.style.background = "pink";
+    document.body.style.color = "black";
+    document.querySelectorAll(".music-card,.letter-card,#quiz,#wishWall,#cardBack,.memory").forEach(el=>{
+        el.style.background = "white";
+        el.style.color = "black";
+    });
+};
+
+blueTheme.onclick = ()=>{
+    document.body.style.background = "lightblue";
+    document.body.style.color = "black";
+    document.querySelectorAll(".music-card,.letter-card,#quiz,#wishWall,#cardBack,.memory").forEach(el=>{
+        el.style.background = "white";
+        el.style.color = "black";
+    });
+};
+
+darkTheme.onclick = ()=>{
+    document.body.style.background = "#222";
+    document.body.style.color = "white";
+    document.querySelectorAll(".music-card,.letter-card,#quiz,#wishWall,#cardBack,.memory").forEach(el=>{
+        el.style.background = "#333";
+        el.style.color = "white";
+    });
+};
+
+const birthdayCard = document.getElementById("birthdayCard");
+const cardFront = document.getElementById("cardFront");
+const cardInside = document.getElementById("cardBack");
+
+birthdayCard.onclick = ()=>{
+    birthdayCard.classList.toggle("open");
+};
+
+function fireworkShow(){
+    for(let i=0;i<15;i++){
+        setTimeout(createFirework, i*120);
+    }
+}
+
+const targetDate = new Date("March 25, 2027 00:00:00");
+
+function updateCountdown(){
+    const now = new Date();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+        document.getElementById("days").innerHTML = "00";
+        document.getElementById("hours").innerHTML = "00";
+        document.getElementById("minutes").innerHTML = "00";
+        document.getElementById("seconds").innerHTML = "00";
+        startTypewriter();
+        return;
+    }
+
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff/(1000*60*60)) % 24);
+    const minutes = Math.floor((diff/(1000*60)) % 60);
+    const seconds = Math.floor((diff/1000) % 60);
+
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+function checkAnswer(age){
+    const result = document.getElementById("quizResult");
+    if(age === 15){
+        result.innerHTML = "🎉 Correct! Opening Kitty Game...";
+        setTimeout(()=>{ window.location.href = "kitty.html"; }, 2000);
+    }else{
+        result.innerHTML = "❌ Wrong Answer! Try Again.";
+    }
+}
+
+const images = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg"
+];
+let currentImage = 0;
+const slideImage = document.getElementById("slideImage");
+
+setInterval(()=>{
+    currentImage++;
+    if(currentImage >= images.length){ currentImage = 0; }
+    slideImage.src = images[currentImage];
+}, 3000);
+
+function addWish(){
+    const input = document.getElementById("wishInput");
+    const wishList = document.getElementById("wishList");
+    if(input.value.trim() === ""){ return; }
+    const wish = document.createElement("div");
+    wish.className = "wish";
+    wish.innerHTML = "🎉 " + input.value;
+    wishList.appendChild(wish);
+    input.value = "";
+}
+
+const badges = document.querySelectorAll(".badge");
+
+badges.forEach(badge=>{
+
+    badge.onclick = ()=>{
+
+        if(badge.innerText.includes("Birthday Star")){
+            window.location.href = "gallery.html";
+        }
+
+        else if(badge.innerText.includes("Gift Hunter")){
+            window.location.href = "gifthunter.html";
+        }
+
+        else if(badge.innerText.includes("Party Queen")){
+            window.location.href = "partyqueen.html";
+        }
+
+    };
+
+});
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+let drawing = false;
+
+canvas.addEventListener("mousedown", start);
+canvas.addEventListener("mouseup", stop);
+canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("touchstart", startTouch);
+canvas.addEventListener("touchend", stop);
+canvas.addEventListener("touchmove", drawTouch);
+
+function start(){ drawing = true; }
+
+function stop(){
+    drawing = false;
+    ctx.beginPath();
+}
+
+function draw(e){
+    if(!drawing) return;
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+}
+
+function startTouch(e){ drawing = true; }
+
+function drawTouch(e){
+    if(!drawing) return;
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const y = e.touches[0].clientY - rect.top;
+    ctx.lineWidth = 4;
+    ctx.lineCap = "round";
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
+
+function clearCanvas(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function closeDrawPage(){
+    document.getElementById("drawPage").style.display = "none";
+}
+
+function openBirthdayPage(){ window.location.href = "birthday.html"; }
+function openPartyPage(){ window.location.href = "party.html"; }
+function openGiftPage(){ window.location.href = "gift.html"; }
+
+const playBtn = document.getElementById("playBtn");
+
+playBtn.onclick = ()=>{
+    if(music.paused){
+        music.play();
+        playBtn.innerHTML = "⏸";
+    }else{
+        music.pause();
+        playBtn.innerHTML = "▶";
+    }
+};
+
+music.addEventListener("timeupdate",()=>{
+    const progress = document.getElementById("progress");
+    progress.value = (music.currentTime / music.duration) * 100 || 0;
+});
+
+document.getElementById("progress").addEventListener("input", function(){
+    music.currentTime = (this.value / 100) * music.duration;
+});
+
+// FIX 8: finaleButton click handler — was completely missing
+function startFinale(){
+    fireworkShow();
+    const msg = document.getElementById("finaleMessage");
+    msg.innerHTML = "🎉 HAPPY BIRTHDAY MANVI! 🎉";
+    msg.style.color = "#ff1493";
+    for(let i=0;i<20;i++){
+        setTimeout(createConfetti, i*200);
+    }
+}
+let typed = false;
+
+function startTypewriter(){
+
+    const box = document.getElementById("birthdayMessage");
+
+    if(!box){
+        alert("birthdayMessage not found");
+        return;
+    }
+
+    box.innerHTML = "";
+
+    const text =
+`💖 Dear Manvi,
+
+Today is your special day! 🎂
+
+May your life always be filled with happiness, laughter and success.
+
+May every dream you have come true and every moment become a beautiful memory. ✨
+
+Thank you for being such a wonderful person.
+
+🎉 Happy Birthday! 🎉
+
+With best wishes 💕`;
+    let i = 0;
+
+    const typing = setInterval(() => {
+
+        box.innerHTML += text.charAt(i);
+
+        i++;
+
+        if(i >= text.length){
+            clearInterval(typing);
+            fireworkShow();
+        }
+
+    }, 80);
+}
+</script>
+</body>
+</html>
